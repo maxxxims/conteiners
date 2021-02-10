@@ -1,106 +1,82 @@
 #include <iostream>
 using namespace std;
 
-struct subvector {
-    int *mas;
-    unsigned int top;
-    unsigned int capacity;
+class sub_vector{
+    public:
+        void init(){
+            top=0;
+            capacity=0;
+            data = nullptr;
+            cout<<"vector is successfully created"<<endl;
+        }
+
+        void push(int a){
+            if(top>=capacity){
+                capacity++;
+                int* p = new int[capacity];
+                for(int i=0; i<top; i++){
+                    p[i]=data[i];
+                }
+                p[top]=a;
+                top++;
+                data=p;
+                delete[] p;
+            }
+            else{
+                data[top] = a;
+                top++;
+
+            }
+            print();
+            //cout<<"You write "<<data[top-1]<<endl;
+        }
+
+/*
+    int pop_back(){
+        if(top>0){
+            top--;
+            //capacity--;
+            int* p= new int [capacity];
+            for(int i=0; i<top; i++){
+                p[i]=data[i];
+            }
+            delete[] data;
+            data = p;
+            delete[] p;
+
+        }
+        else{
+            return 0;
+        }
+    }*/
+
+
+
+    void print(){
+        for(int i=0; i<top; i++){
+            cout<<data[i]<<" ";
+        }
+        cout<<endl;
+        cout<<"top is "<<top<<" capacity is "<<capacity<<endl<<endl;
+    }
+
+    ~sub_vector(){
+        delete[] data;
+    }
+
+    private:
+        unsigned int top;
+        unsigned int capacity;
+        int* data;
+
 };
 
-bool init(subvector *qv){
-    qv->mas = NULL;
-    qv->top = 0;
-    qv->capacity =0;
-    return true;
-}
-
-
-bool push_back(subvector *qv, int d){
-    if((qv->top)<(qv->capacity)){
-        qv->mas[(qv->top)] = d;
-    }
-    else{
-        int *p= new int[(qv-> capacity)+1];
-        for(int i=0; i<(qv->capacity); i++){
-            qv->mas[i] = p[i];
-        }
-        delete[] qv->mas;
-        qv->capacity++;
-		qv->mas = p;
-		*(qv->mas + qv->top) = d;
-		qv->top++;
-    }
-    qv->top++;
-    return true;
-}
-
-
-int pop_back(subvector* qv)
-{
-	if (qv->top > 0)
-	{
-		qv->top--;
-		int e = *(qv->mas + qv->top);
-		return e;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-bool resize(subvector* qv, unsigned int new_capacity)
-{
-	if (new_capacity > 0) {
-		int* p = new int[new_capacity];
-		for (int i = 0; i < qv->top; i++)
-		{
-			*(p + i) = *(qv->mas + i);
-		}
-		if (qv->capacity > 0) delete[] qv->mas;
-		qv->capacity = new_capacity;
-		qv->mas = p;
-		if (new_capacity < qv->top) qv->top = new_capacity;
-		return true;
-	}
-	else
-	{
-		if (qv->capacity > 0) delete[] qv->mas;
-		init(qv);
-		return true;
-	}
-}
-
-void shrink_to_fit(subvector* qv)
-{
-	if (qv->capacity > qv->top)
-	{
-		if (qv->top > 0)
-		{
-			int* p = new int[qv->top];
-			for (int i = 0; i < qv->top; i++)
-			{
-				*(p + i) = *(qv->mas + i);
-			}
-			delete[] qv->mas;
-			qv->capacity = qv->top;
-			qv->mas = p;
-		}
-		else
-		{
-			delete[] qv->mas;
-			init(qv);
-		}
-	}
-}
-void clear(subvector* qv)
-{
-	qv->top = 0;
-}
-
-void destructor(subvector* qv)
-{
-	delete[] qv->mas;
-	init(qv);
+int main(){
+    sub_vector subvector;
+    subvector.init();
+    subvector.push(1);
+    subvector.push(2);
+    subvector.push(3);
+    subvector.push(4);
 }
 
